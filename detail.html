@@ -25,28 +25,14 @@
                
           </main>
      <script src="./js/api_key.js"></script>
+     <script src="./js/elements/cardDetailElement.js"></script>
      <script>
           document.addEventListener("DOMContentLoaded",()=>{
                movieId=window.localStorage.getItem("ID_FILM");
                fetch(`${URLAPI}/movie/${movieId}?api_key=${APIKEY}`)
                .then(res=>res.json())
                .then(res=>{
-                   const component = `<div class="flex shadow border-radius-pill">
-                    <img src="https://image.tmdb.org/t/p/w500/${res.backdrop_path}" class="img-big rounded-pill-left" alt="" id="img-film">
-                    <div class="mx-2 w-100 my-3">
-                         <h1 class="">${res.title} (${new Date(
-                              res.release_date
-                         ).getFullYear()})</h1>
-                         <hr class="my-1">
-                         <div class="flex align-center my-1">
-                              <img  src="https://image.tmdb.org/t/p/w500/${res.production_companies[0].logo_path}" class="rounded-pill-small"> 
-                              <h3 class="mx-1"> ${res.production_companies[0].name}</h3>
-                         </div>
-                         <h3 class="my-1"> ${res.genres.map(el=>`${el.name} `)}</h3>
-                         
-                         <p>${res.overview}</p>
-                    </div>
-               </div>`
+                   const component = `<card-detail-component image="${res.backdrop_path}" title="${res.title}" year="${res.release_date}" logo_path="${res.production_companies[0].logo_path}" production_companies="${res.production_companies[0].name}" genres="${res.genres.map((el) => `${el.name} `)}" overview="${res.overview}"> </card-detail-component>`
                document.getElementById('card-container').innerHTML = component;
                })
           })
