@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <link rel="stylesheet" href="./css/styles.css">
+
+</head>
+<body>
+     <div class="bg-primary px-3 py-2 ">
+          <nav class=" flex justify-between">
+               <div>
+                    <h1 class="text-white">Movies Website </h1>
+               </div>
+               <div class="flex justify-between text-white">
+                    <h5 class="mx-2">Home</h5>
+                    <h5 class="mx-2">Categories</h5>
+                    <h5 class="mx-2">About</h5>
+               </div>
+          </nav>
+     </div>
+          <main class="mx-3 my-3 "id="card-container">
+               
+          </main>
+     <script src="./js/api_key.js"></script>
+     <script>
+          document.addEventListener("DOMContentLoaded",()=>{
+               movieId=window.localStorage.getItem("ID_FILM");
+               fetch(`${URLAPI}/movie/${movieId}?api_key=${APIKEY}`)
+               .then(res=>res.json())
+               .then(res=>{
+                   const component = `<div class="flex shadow border-radius-pill">
+                    <img src="https://image.tmdb.org/t/p/w500/${res.backdrop_path}" class="img-big rounded-pill-left" alt="" id="img-film">
+                    <div class="mx-2 w-100 my-3">
+                         <h1 class="">${res.title} (${new Date(
+                              res.release_date
+                         ).getFullYear()})</h1>
+                         <hr class="my-1">
+                         <div class="flex align-center my-1">
+                              <img  src="https://image.tmdb.org/t/p/w500/${res.production_companies[0].logo_path}" class="rounded-pill-small"> 
+                              <h3 class="mx-1"> ${res.production_companies[0].name}</h3>
+                         </div>
+                         <h3 class="my-1"> ${res.genres.map(el=>`${el.name} `)}</h3>
+                         
+                         <p>${res.overview}</p>
+                    </div>
+               </div>`
+               document.getElementById('card-container').innerHTML = component;
+               })
+          })
+     </script>
+</body>
+</html>
